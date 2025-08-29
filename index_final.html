@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PROT. D30 — 30 DIAS SEM CAIR</title>
+  <meta name="description" content="Protocolo D30: 30 dias de guerra mental contra a pornografia e a dopamina barata." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes flash {
+      0% { opacity: .9 }
+      100% { opacity: 0 }
+    }
+    .alert-flash {
+      animation: flash .45s ease-out forwards;
+    }
+    .progress-bar-gradient {
+      background: linear-gradient(90deg, #ff0000 0%, #ff2a2a 100%);
+      box-shadow: 0 0 12px rgba(255,0,0,.5);
+    }
+    .hero-gradient {
+      background: radial-gradient(800px 400px at 90% 10%, rgba(255,0,0,.08), transparent 60%),
+                  radial-gradient(500px 400px at 10% 0%, rgba(255,40,40,.08), transparent 60%);
+    }
+    .panel-gradient {
+      background: linear-gradient(180deg, #121212 0%, #171717 100%);
+    }
+    .panel-strong-gradient {
+      background: linear-gradient(180deg, #121212 0%, #171717 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,0,0,.12);
+    }
+    .relato-gradient {
+      background: linear-gradient(180deg, #111 0%, #0d0d0d 100%);
+    }
+    .btn-gradient {
+      background: linear-gradient(180deg, #ff0000 0%, #cc0000 100%);
+      box-shadow: 0 10px 28px rgba(255,0,0,.18), inset 0 -2px 0 rgba(0,0,0,.25);
+    }
+    .btn-gradient:hover {
+      box-shadow: 0 14px 32px rgba(255,0,0,.22);
+    }
+    .progress-wrap-gradient {
+      background: linear-gradient(180deg, rgba(10,10,10,.92) 0%, rgba(10,10,10,.65) 100%);
+    }
+    .locked-overlay::after {
+      content: "Assine o juramento para desbloquear";
+    }
+  
+/* --- Lock/Unlock state (refactor limpo) --- */
+.locked{
+  filter: blur(3px) grayscale(25%) brightness(0.6);
+  pointer-events: none;
+  user-select: none;
+}
+.unlocked{
+  filter: none;
+  pointer-events: auto;
+  user-select: auto;
+}
+
+/* (opcional) transição suave do deblur */
+#lockWrap{
+  transition: filter .18s ease, -webkit-filter .18s ease;
+}
+
+/* === Mobile optimizations === */
+@media (max-width: 480px){
+  .container{padding-left:1rem;padding-right:1rem}
+  .sig{flex-wrap:wrap;gap:.625rem}
+  #nomeRecruta{width:100%}
+  .sig label{display:inline-flex;align-items:center;gap:.5rem;line-height:1.2}
+  #unlockBtn{width:100%}
+  .float-cta{left:.75rem;right:.75rem;bottom:.75rem}
+  .float-cta button{width:100%}
+  body{padding-bottom:84px}
+  .panel-gradient,.panel-strong-gradient{border-radius:12px}
+}
+
+</style>
+</head>
+<body class="bg-gradient-to-b from-[#0b0b0b] to-[#0a0a0a] text-[#e6e6e6] font-sans leading-relaxed tracking-wide">
+  <!-- Progress HUD -->
+  <div class="progress-wrap-gradient sticky top-0 z-50 backdrop-blur-md backdrop-saturate-150 border-b border-[#1a1a1a]">
+    <div class="w-full h-1.5 bg-[#0e0e0e] relative overflow-hidden">
+      <div id="progressBar" class="progress-bar-gradient h-full absolute left-0 top-0 w-0 transition-all duration-150 ease-linear"></div>
+    </div>
+    <div class="container mx-auto px-4 py-2 flex items-center justify-between text-sm" aria-live="polite">
+      <div class="badge bg-[#131313] border border-[#1f1f1f] rounded-full px-3 py-1 inline-flex items-center gap-2">
+        <span class="dot w-2.5 h-2.5 rounded-full bg-[#ff0000] shadow-[0_0_8px_rgba(255,0,0,0.65)]"></span>
+        <span id="hudStage">RECRUTA INICIADO</span>
+      </div>
+      <div id="hudPercent" class="opacity-90">Você está 0% mais perto de se libertar.</div>
+      <div id="socialProof" class="badge bg-[#131313] border border-[#1f1f1f] rounded-full px-3 py-1 inline-flex items-center gap-1">
+        ️ <span>0</span> recrutas hoje
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero-gradient py-12 md:py-24 px-4">
+    <div class="container mx-auto max-w-6xl">
+      <div class="text-[#ff0000] uppercase font-extrabold text-xs tracking-widest">PROTOCOLO D30 • PÁGINA PROIBIDA</div>
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-black tracking-wide mt-2 mb-4">30 DIAS SEM CAIR</h1>
+      <p class="text-lg md:text-xl text-[#e0e0e0] mb-6">O Protocolo de Guerra Contra a Pornografia e a Dopamina Barata</p>
+      <div class="flex flex-wrap items-center gap-3">
+        <button id="acceptBtn" data-hover="JURAR FIDELIDADE AO PROTOCOLO" class="btn-gradient text-white font-black tracking-wide px-5 py-3 rounded-xl hover:-translate-y-0.5 hover:saturate-[1.15] transition-transform duration-75 ease-in">
+          <span>ACEITAR O DESAFIO</span>
+        </button>
+        <button onclick="document.getElementById('juramento').scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-[#2a2a2a] text-[#ededed] font-bold px-5 py-3 rounded-xl hover:bg-[#1a1a1a] transition-colors">
+          Ver Código do Recruta
+        </button>
+        <span class="bomb bg-[#120000] border border-[#2a0e0e] text-[#ffdbdb] px-3 py-1.5 rounded-lg inline-flex items-center gap-2 font-mono">
+          <span class="led w-2 h-2 rounded-full bg-[#ff0000] shadow-[0_0_10px_rgba(255,0,0,0.8)]"></span>
+          <span>Tempo restante:</span>
+          <strong class="time font-black tracking-wider" id="bombTime">17:38</strong>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Juramento Inicial -->
+    <section id="juramento" class="border-t border-[#1f1f1f] py-8 md:py-16">
+      <div class="container mx-auto max-w-6xl px-4 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="panel-strong-gradient border border-[#2a0e0e] rounded-xl p-5">
+          <h2 class="text-2xl md:text-3xl font-extrabold mb-3">AQUI NÃO TEM MILAGRE. TEM DOUTRINAÇÃO.</h2>
+          <blockquote class="text-[#9b9b9b] border-l-4 border-[#ff0000] pl-4 my-4">
+            "Seu cérebro foi hackeado. Hora de reprogramar o sistema."
+          </blockquote>
+          <h3 class="text-xl md:text-2xl font-extrabold mt-4">CÓDIGO MENTAL: OS 5 RITOS DO SOLDADO INVISÍVEL</h3>
+          <ul class="code-rites grid gap-2 my-4">
+            <li class="bg-[#121212] border border-[#222] px-4 py-2 rounded-lg">1) Não scrollarei em vão.</li>
+            <li class="bg-[#121212] border border-[#222] px-4 py-2 rounded-lg">2) Não gozarei por covardia.</li>
+            <li class="bg-[#121212] border border-[#222] px-4 py-2 rounded-lg">3) Vontade é dor disfarçada. Eu vou rir dela.</li>
+            <li class="bg-[#121212] border border-[#222] px-4 py-2 rounded-lg">4) O inimigo mora nos hábitos. Eu serei meu próprio exército.</li>
+            <li class="bg-[#121212] border border-[#222] px-4 py-2 rounded-lg">5) Só sobe quem sangra. Só vence quem fica.</li>
+          </ul>
+          <div class="sig flex items-center gap-3 mt-4">
+            <input type="text" id="nomeRecruta" placeholder="Assine seu compromisso (Nome do Recruta)" class="flex-1 bg-[#0f0f0f] border border-[#222] text-[#ddd] px-4 py-2 rounded-lg" />
+            <label class="flex items-center gap-2 text-sm">
+              <input type="checkbox" id="aceito" />
+              Eu aceito o juramento
+            </label>
+            <button id="unlockBtn" class="btn-gradient text-white font-black tracking-wide px-4 py-2 rounded-lg whitespace-nowrap">Desbloquear</button>
+          </div>
+          <p class="text-[#9b9b9b] text-sm mt-2">Apenas após assinar, o restante da página é liberado.</p>
+        </div>
+
+        <div class="panel-gradient border border-[#1f1f1f] rounded-xl p-5">
+          <h3 class="text-xl md:text-2xl font-extrabold">Exclusividade Tática</h3>
+          <p class="text-[#9b9b9b] mb-4">Este protocolo não aparece em anúncios. Você só chegou aqui porque foi rastreado como perfil de risco. Se sair agora, nunca mais vai ver isso.</p>
+          <ul class="bullets grid gap-2 mt-4">
+            <li class="flex items-start gap-3"><span class="x font-black text-[#ff0000]">❌</span> Procura um abraço? Página errada.</li>
+            <li class="flex items-start gap-3"><span class="x font-black text-[#ff0000]">❌</span> Quer dicas Nutella de autoajuda? Não existe aqui.</li>
+            <li class="flex items-start gap-3"><span class="x font-black text-[#ff0000]">❌</span> Acha que muda em 3 dias? Continue sonhando.</li>
+            <li class="flex items-start gap-3"><span class="x font-black text-[#ff0000]">❌</span> Não encara seus vícios? Feche esta aba.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bloco bloqueado até juramento -->
+    <div id="lockWrap" class="locked relative">
+      <!-- Dores -->
+      <section class="border-t border-[#1f1f1f] py-8 md:py-16">
+        <div class="container mx-auto max-w-6xl px-4 panel-gradient border border-[#1f1f1f] rounded-xl p-5">
+          <h2 class="text-2xl md:text-3xl font-extrabold mb-4">VOCÊ SABE QUE É UM VICIADO</h2>
+          <ul class="bullets grid gap-2 mt-4">
+            <li class="flex items-start gap-3"><span class="x font-black text-[#ff0000]">❌</span> Passa horas scrollando sem perceber.</li>
+            <li class="flex items-start gap-3"><span class="x font-black text-[#ff0000]">❌</span> Já jurou parar, mas caiu 3 vezes só hoje.</li>
+            <li class="flex items-start gap-3"><span class="x font-black text-[#ff0000]">❌</span> Se esconde atrás de "ansiedade", mas só tem preguiça com Wi-Fi.</li>
+            <li class="flex items-start gap-3"><span class="x font-black text-[#ff0000]">❌</span> Braço direito mais forte que sua disciplina.</li>
+          </ul>
+          <p class="text-[#9b9b9b] text-sm mt-2">Se reconheceu qualquer item, você já está na guerra — mas está perdendo.</p>
+        </div>
+      </section>
+
+      <!-- O que é -->
+      <section class="border-t border-[#1f1f1f] py-8 md:py-16">
+        <div class="container mx-auto max-w-6xl px-4 grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="panel-gradient border border-[#1f1f1f] rounded-xl p-5">
+            <h3 class="text-xl font-extrabold">Não é livro</h3>
+            <p class="text-[#9b9b9b]">É um arquivo proibido. Cada página é um comando.</p>
+          </div>
+          <div class="panel-gradient border border-[#1f1f1f] rounded-xl p-5">
+            <h3 class="text-xl font-extrabold">Não é curso</h3>
+            <p class="text-[#9b9b9b]">É doutrinação prática. Zero teoria vazia.</p>
+          </div>
+          <div class="panel-gradient border border-[#1f1f1f] rounded-xl p-5">
+            <h3 class="text-xl font-extrabold">É Protocolo</h3>
+            <p class="text-[#9b9b9b]">30 dias. 4 operações militares. Missões diárias.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Estrutura -->
+      <section class="border-t border-[#1f1f1f] py-8 md:py-16">
+        <div class="container mx-auto max-w-6xl px-4 panel-gradient border border-[#1f1f1f] rounded-xl p-5">
+          <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Estrutura das Operações (Semanas)</h2>
+          <div class="ops grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="op border-l-4 border-[#ff0000] pl-4">
+              <h3 class="text-xl font-extrabold">Semana 1 — Operação Raiz</h3>
+              <p class="text-[#9b9b9b]">Força Despertada • Juramento: "Eu não scrollarei em vão".</p>
+            </div>
+            <div class="op border-l-4 border-[#ff0000] pl-4">
+              <h3 class="text-xl font-extrabold">Semana 2 — Operação Reset</h3>
+              <p class="text-[#9b9b9b]">Clareza Conquistada • Juramento: "Eu não gozarei por covardia".</p>
+            </div>
+            <div class="op border-l-4 border-[#ff0000] pl-4">
+              <h3 class="text-xl font-extrabold">Semana 3 — Operação Transmutação</h3>
+              <p class="text-[#9b9b9b]">Foco Forjado • Juramento: "Eu serei meu próprio exército".</p>
+            </div>
+            <div class="op border-l-4 border-[#ff0000] pl-4">
+              <h3 class="text-xl font-extrabold">Semana 4 — Operação Supremacia</h3>
+              <p class="text-[#9b9b9b]">Propósito Desbloqueado • Juramento: "Só sobe quem sangra".</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Arsenal -->
+      <section class="border-t border-[#1f1f1f] py-8 md:py-16">
+        <div class="container mx-auto max-w-6xl px-4 panel-strong-gradient border border-[#2a0e0e] rounded-xl p-5">
+          <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Arsenal de Guerra (Bônus)</h2>
+          <p class="text-[#9b9b9b] mb-4">HUD tático: escolha sua arma de contra-ataque no momento do gatilho.</p>
+          <div class="arsenal-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 1: Flexão de Emergência</h4>
+              <p class="text-[#9b9b9b] text-sm">O desejo bateu? Jogue-se no chão. Faça 20.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 2: Corrida de Fuga Mental</h4>
+              <p class="text-[#9b9b9b] text-sm">Corra 5 min. Sem celular.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 3: Exposição Térmica</h4>
+              <p class="text-[#9b9b9b] text-sm">Banho gelado 2–3 min.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 4: Golpe Sonoro</h4>
+              <p class="text-[#9b9b9b] text-sm">Música alta + movimento.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 5: Símbolo de Disciplina</h4>
+              <p class="text-[#9b9b9b] text-sm">Cole o signo na parede.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 6: Diário de Bordo</h4>
+              <p class="text-[#9b9b9b] text-sm">Escrever = dominar o caos.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 7: Tarefa Intensa</h4>
+              <p class="text-[#9b9b9b] text-sm">Faça a coisa difícil agora.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 8: Contemplação da Morte</h4>
+              <p class="text-[#9b9b9b] text-sm">A urgência corta a tentação.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 9: Alarme de Emergência</h4>
+              <p class="text-[#9b9b9b] text-sm">Interrompa o ciclo cedo.</p>
+            </div>
+            <div class="arsenal-item border-l-4 border-[#2a2a2a] pl-3">
+              <h4 class="font-bold">✅ ARMA 10: Ligação para a Realidade</h4>
+              <p class="text-[#9b9b9b] text-sm">Responsabilidade externa.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Relato -->
+      <section class="border-t border-[#1f1f1f] py-8 md:py-16">
+        <div class="container mx-auto max-w-6xl px-4">
+          <div class="relato-gradient italic border-l-4 border-[#ff0000] p-5 rounded-xl">
+            "Dia 11. A mão tremia. A tela brilhava no escuro. Eu quase caí. Mas cumpri o protocolo. Ele não falha. Você falha."
+            <div class="text-[#9b9b9b] text-sm mt-2">— Recruta Sombrio #741</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Oferta -->
+      <section id="oferta" class="border-t border-[#1f1f1f] py-8 md:py-16">
+        <div class="container mx-auto max-w-6xl px-4 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="panel-gradient border border-[#1f1f1f] rounded-xl p-5">
+            <h2 class="text-2xl md:text-3xl font-extrabold mb-2">ENTRAR NO PROTOCOLO</h2>
+            <p class="text-[#9b9b9b] mb-4">Pacote oficial do D30</p>
+            <p class="price text-4xl font-black mb-4">
+              <span class="opacity-70 line-through mr-2">R$ 97,00</span> R$ 29,90
+            </p>
+            <ul class="bullets grid gap-2 mt-4">
+              <li class="flex items-start gap-3">🧠 PDF ritualístico completo</li>
+              <li class="flex items-start gap-3">✅ Checklist digital interativo (Notion/Canva)</li>
+              <li class="flex items-start gap-3">⚔️ Arsenal de Guerra imprimível</li>
+            </ul>
+            <p class="text-[#9b9b9b] text-sm mt-3">ATENÇÃO: este protocolo será removido em breve por violar termos de várias plataformas.</p>
+            <div class="flex flex-wrap items-center gap-3 mt-4">
+              <button data-hover="JURAR FIDELIDADE AO PROTOCOLO" onclick="scrollToTop()" class="btn-gradient text-white font-black tracking-wide px-5 py-3 rounded-xl hover:-translate-y-0.5 hover:saturate-[1.15] transition-transform duration-75 ease-in">
+                <span>EU ACEITO O JURAMENTO</span>
+              </button>
+              <button onclick="document.getElementById('juramento').scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-[#2a2a2a] text-[#ededed] font-bold px-5 py-3 rounded-xl hover:bg-[#1a1a1a] transition-colors">
+                Ver Código novamente
+              </button>
+            </div>
+          </div>
+          <div class="panel-strong-gradient border border-[#2a0e0e] rounded-xl p-5">
+            <h3 class="text-xl md:text-2xl font-extrabold mb-4">Contraste Social Final</h3>
+            <p class="mb-6">"95% nunca vão sobreviver a esse protocolo. Vai ser mais um número ou uma ameaça invisível no campo de batalha mental?"</p>
+            <button data-hover="JURAR FIDELIDADE AO PROTOCOLO" class="btn-gradient text-white font-black tracking-wide px-5 py-3 rounded-xl hover:-translate-y-0.5 hover:saturate-[1.15] transition-transform duration-75 ease-in w-full">
+              <span>EU NÃO VOU CAIR</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Floating CTA -->
+  <div class="float-cta fixed right-4 bottom-4 z-40 flex items-center gap-3">
+    <button onclick="document.getElementById('oferta').scrollIntoView({behavior:'smooth'})" data-hover="JURAR FIDELIDADE AO PROTOCOLO" class="btn-gradient text-white font-black tracking-wide px-4 py-3 rounded-xl hover:-translate-y-0.5 hover:saturate-[1.15] transition-transform duration-75 ease-in">
+      <span>⚔️ QUERO MINHA ORDEM DE MISSÃO</span>
+    </button>
+  </div>
+
+  <footer class="border-t border-[#1a1a1a] py-8">
+    <div class="container mx-auto max-w-6xl px-4">
+      <small class="text-[#9b9b9b]">© PROTOCOLO D30 — Documento ritualístico. Não compartilhe.</small>
+    </div>
+  </footer>
+
+  <script>
+    // --------- Progress HUD ----------
+    const pb = document.getElementById('progressBar');
+    const hudPercent = document.getElementById('hudPercent');
+    const hudStage = document.getElementById('hudStage');
+
+    function onScroll(){
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const p = Math.max(0, Math.min(100, Math.round((scrollTop / docH) * 100)));
+      pb.style.width = p + '%';
+      hudPercent.textContent = `Você está ${p}% mais perto de se libertar.`;
+      if(p < 33){ hudStage.textContent = 'RECRUTA INICIADO'; }
+      else if(p < 66){ hudStage.textContent = 'EM MISSÃO'; }
+      else { hudStage.textContent = 'PRONTO PARA A GUERRA'; }
+    }
+    document.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+
+    // --------- Social proof (simulado) ----------
+    const sp = document.querySelector('#socialProof span');
+    function randomRecruits(){
+      const val = Math.floor(120 + Math.random()*120); // 120–240
+      sp.textContent = val;
+    }
+    randomRecruits();
+    setInterval(randomRecruits, 30000);
+
+    // --------- Countdown estilo "bomba" ----------
+    const bombEl = document.getElementById('bombTime');
+    let secs = 17*60 + 38;
+    function tick(){
+      secs = Math.max(0, secs-1);
+      const m = String(Math.floor(secs/60)).padStart(2,'0');
+      const s = String(secs%60).padStart(2,'0');
+      bombEl.textContent = `${m}:${s}`;
+      if(secs===0){ clearInterval(timer); }
+    }
+    const timer = setInterval(tick, 1000);
+
+    // --------- Juramento (gate/unlock) ----------
+    const acceptBtn = document.getElementById('acceptBtn');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const nomeRecruta = document.getElementById('nomeRecruta');
+    const aceito = document.getElementById('aceito');
+    const lockWrap = document.getElementById('lockWrap');
+
+  function doUnlock(){
+    lockWrap.classList.remove('locked');
+    lockWrap.classList.add('unlocked');
+    triggerAlertFlash();
+    sessionStorage.setItem('d30_unlocked','1');
+  }
+
+    function triggerAlertFlash(){
+      const flash = document.createElement('div');
+      flash.className = 'fixed inset-0 bg-[rgba(255,0,0,0.18)] alert-flash pointer-events-none z-50';
+      document.body.appendChild(flash);
+      setTimeout(() => flash.remove(), 500);
+    }
+
+    acceptBtn.addEventListener('click', ()=>{
+      triggerAlertFlash();
+      document.getElementById('juramento').scrollIntoView({behavior:'smooth'});
+      nomeRecruta.focus();
+    });
+
+    unlockBtn.addEventListener('click', ()=>{
+      const ok = nomeRecruta.value.trim().length >= 2 && aceito.checked;
+      if(!ok){
+        alert('Assine o nome e marque o juramento para desbloquear.');
+        return;
+      }
+      doUnlock();
+    });
+
+    // restaura unlock
+    if(sessionStorage.getItem('d30_unlocked')==='1'){
+      doUnlock();
+    }
+
+    // --------- CTA helper ----------
+    function scrollToTop(){ window.scrollTo({top:0, behavior:'smooth'}); }
+
+    // --------- CTA hover alt text para telas touch (fallback) ----------
+    // Em touch, alterna texto ao toque rápido
+    document.querySelectorAll('.btn-gradient[data-hover]').forEach(btn=>{
+      btn.addEventListener('touchstart', ()=>{
+        const span = btn.querySelector('span');
+        const alt = btn.getAttribute('data-hover');
+        const cur = span.textContent;
+        span.textContent = alt;
+        btn.setAttribute('data-hover', cur);
+        setTimeout(()=>{ // volta após 1.2s
+          const s2 = btn.querySelector('span');
+          const alt2 = btn.getAttribute('data-hover');
+          const cur2 = s2.textContent;
+          s2.textContent = alt2;
+          btn.setAttribute('data-hover', cur2);
+        }, 1200);
+      }, {passive:true});
+    });
+  </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=ronaldo157/ronaldo" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>
