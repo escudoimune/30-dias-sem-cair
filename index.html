@@ -18,10 +18,7 @@
     .progress-wrap-gradient{background:linear-gradient(180deg,rgba(10,10,10,.92) 0%,rgba(10,10,10,.65) 100%)}
 
     /* ===== Gate ===== */
-    .locked [data-locked]{
-      filter: blur(3px) grayscale(25%) brightness(0.6);
-      pointer-events:none; user-select:none;
-    }
+    .locked [data-locked]{filter: blur(3px) grayscale(25%) brightness(0.6);pointer-events:none; user-select:none;}
     .unlocked [data-locked]{filter:none;pointer-events:auto;user-select:auto}
 
     @keyframes flash{0%{opacity:.9}100%{opacity:0}}
@@ -205,8 +202,8 @@
             </ul>
             <p class="text-[#9b9b9b] text-xs mt-3">ATENÇÃO: este protocolo pode ser removido por violar termos de plataformas.</p>
             <div class="flex flex-wrap items-center gap-3 mt-4">
-              <!-- Kirvano: SUBSTITUA a URL do href pelo seu link de checkout -->
-              <a id="buyBtn" href="https://pay.kirvano.com/SEU_CHECKOUT?prod=D30&price=14.90" class="btn-gradient text-white font-black tracking-wide px-5 py-3 rounded-xl hover:-translate-y-0.5 hover:saturate-[1.15] transition-transform duration-75">
+              <!-- Kirvano: LINK INTEGRADO -->
+              <a id="buyBtn" href="https://pay.kirvano.com/228566ed-dbb9-4b38-92d0-d2fa13653282" target="_blank" rel="noopener" class="btn-gradient text-white font-black tracking-wide px-5 py-3 rounded-xl hover:-translate-y-0.5 hover:saturate-[1.15] transition-transform duration-75">
                 EU NÃO VOU CAIR
               </a>
               <button type="button" onclick="document.getElementById('juramento').scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-[#2a2a2a] text-[#ededed] font-bold px-5 py-3 rounded-xl hover:bg-[#1a1a1a]">
@@ -218,7 +215,7 @@
           <div class="panel-strong-gradient border border-[#2a0e0e] rounded-xl p-5">
             <h3 class="text-xl md:text-2xl font-extrabold mb-4">Contraste Social Final</h3>
             <p class="mb-6">"95% nunca vão sobreviver a esse protocolo. Vai ser mais um número ou uma ameaça invisível?"</p>
-            <a id="buyBtn2" href="https://pay.kirvano.com/SEU_CHECKOUT?prod=D30&price=14.90" class="btn-gradient text-white font-black tracking-wide px-5 py-3 rounded-xl hover:-translate-y-0.5 hover:saturate-[1.15] transition-transform duration-75 w-full text-center">
+            <a id="buyBtn2" href="https://pay.kirvano.com/228566ed-dbb9-4b38-92d0-d2fa13653282" target="_blank" rel="noopener" class="btn-gradient text-white font-black tracking-wide px-5 py-3 rounded-xl hover:-translate-y-0.5 hover:saturate-[1.15] transition-transform duration-75 w-full text-center">
               QUERO MINHA ORDEM DE MISSÃO
             </a>
           </div>
@@ -261,7 +258,7 @@
     const unlockBtn=document.getElementById('unlockBtn');
     const acceptBtn=document.getElementById('acceptBtn');
 
-    function flash(){const d=document.createElement('div');d.className='fixed inset-0 bg-[rgba(255,0,0,0.18)] alert-flash pointer-events-none z-[60]';document.body.appendChild(d);setTimeout(()=>d.remove(),520)}
+    function flash(){const d=document.createElement('div');d.className='fixed inset-0 bg[rgba(255,0,0,0.18)] alert-flash pointer-events-none z-[60]';document.body.appendChild(d);setTimeout(()=>d.remove(),520)}
     function sfx(){try{const a=new Audio('data:audio/wav;base64,UklGRhIAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAAAACAAACAAA=');a.volume=.35;a.play().catch(()=>{})}catch(e){}}
 
     function doUnlock(){
@@ -271,11 +268,7 @@
     }
 
     acceptBtn.addEventListener('click',()=>{flash();document.getElementById('juramento').scrollIntoView({behavior:'smooth'});nome.focus()});
-    unlockBtn.addEventListener('click',()=>{
-      const ok = nome.value.trim().length>=2 && aceito.checked;
-      if(!ok){alert('Assine o nome e marque o juramento para desbloquear.');return}
-      doUnlock();
-    });
+    unlockBtn.addEventListener('click',()=>{const ok = nome.value.trim().length>=2 && aceito.checked;if(!ok){alert('Assine o nome e marque o juramento para desbloquear.');return}doUnlock();});
 
     // Restaurar estado
     if(sessionStorage.getItem('d30_unlocked')==='1'){doUnlock()}
@@ -283,17 +276,15 @@
     // Touch hover swap (botões com data-hover)
     document.querySelectorAll('.btn-gradient[data-hover]').forEach(btn=>{
       btn.addEventListener('touchstart',()=>{
-        const span=btn.querySelector('span')||btn;
-        const alt=btn.getAttribute('data-hover');const cur=span.textContent;
+        const span=btn.querySelector('span')||btn;const alt=btn.getAttribute('data-hover');const cur=span.textContent;
         span.textContent=alt;btn.setAttribute('data-hover',cur);
         setTimeout(()=>{const s2=btn.querySelector('span')||btn;const alt2=btn.getAttribute('data-hover');const cur2=s2.textContent;s2.textContent=alt2;btn.setAttribute('data-hover',cur2)},1200);
       },{passive:true});
     });
 
     // ===== Kirvano: pós-compra com auto-download =====
-    // 1) Configure o "Return URL" da Kirvano para voltar com ?success=1
-    // 2) Coloque o caminho do PDF abaixo (ex.: /files/D30.pdf)
-    const DOWNLOAD_URL = '/files/D30.pdf'; // <- ajuste pro seu host
+    // Sete no painel da Kirvano: Return URL -> https://30diassemcair.life/?success=1
+    const DOWNLOAD_URL = '/files/D30.pdf'; // ajuste pro seu host
     const params=new URLSearchParams(location.search);
     if(params.get('success')==='1'){
       setTimeout(()=>{try{
